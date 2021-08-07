@@ -1,7 +1,7 @@
-const content = document.querySelector("#content");
-
 function listOfColours(colours) {
-  // Write your code here
+  const content = document.querySelector("#content");
+
+  // Write your code here...
 }
 
 /* === INSTRUCTIONS ===
@@ -22,4 +22,6 @@ npm test -- --testPathPattern list-of-colours.test
 (Reminder: You must have run `npm install` one time before this will work!)
 */
 
-module.exports.listOfColours = listOfColours;
+if (typeof module !== "undefined") {
+  module.exports.listOfColours = listOfColours;
+}

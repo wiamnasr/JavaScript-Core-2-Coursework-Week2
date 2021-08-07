@@ -1,6 +1,6 @@
-const content = document.querySelector("#content");
-
 function readingList(books) {
+  const content = document.querySelector("#content");
+
   // Write your code here...
 }
 
@@ -22,4 +22,6 @@ npm test -- --testPathPattern reading-list.test
 (Reminder: You must have run `npm install` one time before this will work!)
 */
 
-module.exports.readingList = readingList;
+if (typeof module !== "undefined") {
+  module.exports.readingList = readingList;
+}

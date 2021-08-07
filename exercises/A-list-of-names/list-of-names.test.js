@@ -2,7 +2,22 @@
 There are some Tests in this file that will help you work out if your code is working.
 */
 
+const patchJsdomInnerText = require("../../util/jsdom-innertext.js");
+
+test("Check DOM is empty with empty input array", () => {
+  patchJsdomInnerText();
+  document.body.innerHTML = `<div id="content" />`;
+  let target = require("./script.js");
+  let people = [];
+  target.listOfNames(people);
+
+  let content = document.querySelector("#content");
+  let children = content.querySelectorAll("h1, h2");
+  expect(children.length).toEqual(0);
+});
+
 test("Check DOM resembles correct output from People Array", () => {
+  patchJsdomInnerText();
   document.body.innerHTML = `<div id="content"></div>`;
   let target = require("./script.js");
   let people = [
@@ -28,14 +43,3 @@ function expectTagWithText(element, expectedTagName, expectedText) {
   expect(element.tagName).toEqualCaseInsensitive(expectedTagName)
   expect(element.textContent).toEqual(expectedText);
 }
-
-test("Check DOM is empty with empty input array", () => {
-  document.body.innerHTML = `<div id="content" />`;
-  let target = require("./script.js");
-  let people = [];
-  target.listOfNames(people);
-
-  let content = document.querySelector("#content");
-  let children = content.querySelectorAll("h1, h2");
-  expect(children.length).toEqual(0);
-});

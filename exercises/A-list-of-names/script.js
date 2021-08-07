@@ -22,4 +22,6 @@ npm test -- --testPathPattern list-of-names.test
 (Reminder: You must have run `npm install` one time before this will work!)
 */
 
-module.exports.listOfNames = listOfNames;
+if (typeof module !== "undefined") {
+  module.exports.listOfNames = listOfNames;
+}

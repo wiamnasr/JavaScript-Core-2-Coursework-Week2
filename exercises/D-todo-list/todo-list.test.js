@@ -2,7 +2,23 @@
 There are some Tests in this file that will help you work out if your code is working.
 */
 
-test("Check DOM resembles correct output for initial setup", () => {
+const {default: userEvent} = require("@testing-library/user-event");
+const patchJsdomInnerText = require("../../util/jsdom-innertext.js");
+
+test("Check DOM has empty <ul> tag when array is empty", () => {
+  patchJsdomInnerText();
+  document.body.innerHTML = `<div id="content" />`;
+  let target = require("./script.js");
+  const todos = [];
+
+  target.todoList(todos);
+
+  let content = document.querySelector("#content");
+  expect(Array.from(content.querySelectorAll("li")).length).toEqual(0);
+});
+
+test("Check list works", () => {
+  patchJsdomInnerText();
   document.body.innerHTML = `<div id="content" />`;
   let target = require("./script.js");
   const todos = [
@@ -15,18 +31,13 @@ test("Check DOM resembles correct output for initial setup", () => {
   target.todoList(todos);
 
   let content = document.querySelector("#content");
-  expect(content.innerHTML).toBe(
-    "<ul><li>wash the dishes</li><li>walk the dog</li><li>learn javascript</li><li>go shopping</li></ul>"
-  );
-});
+  let lis = Array.from(content.querySelectorAll("li"));
+  expect(lis.length).toEqual(4);
+  expect(lis.map(li => li.textContent)).toEqual(["wash the dishes", "walk the dog", "learn javascript", "go shopping"]);
 
-test("Check DOM has empty <ul> tag when array is empty", () => {
-  document.body.innerHTML = `<div id="content" />`;
-  let target = require("./script.js");
-  const todos = [];
-
-  target.todoList(todos);
-
-  let content = document.querySelector("#content");
-  expect(content.innerHTML).toBe("<ul></ul>");
+  expect(lis[0].style.textDecoration).toEqual("");
+  userEvent.click(lis[0]);
+  expect(lis[0].style.textDecoration).toEqual("line-through");
+  userEvent.click(lis[0]);
+  expect(lis[0].style.textDecoration).toEqual("");
 });

@@ -1,5 +1,7 @@
 function shoppingList(arrayOfShopping) {
-  const list = document.createElement("ul");
+  const content = document.querySelector("#content");
+
+  // Write your code here...
 }
 
 /* === INSTRUCTIONS ===
@@ -20,4 +22,6 @@ npm test -- --testPathPattern shopping-list.test
 (Reminder: You must have run `npm install` one time before this will work!)
 */
 
-module.exports.shoppingList = shoppingList;
+if (typeof module !== "undefined") {
+  module.exports.shoppingList = shoppingList;
+}

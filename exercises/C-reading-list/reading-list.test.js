@@ -2,7 +2,21 @@
 There are some Tests in this file that will help you work out if your code is working.
 */
 
+const patchJsdomInnerText = require("../../util/jsdom-innertext.js");
+
+test("Check DOM is empty with empty array", () => {
+  patchJsdomInnerText();
+  document.body.innerHTML = `<div id="content" />`;
+  let target = require("./script.js");
+  const books = [];
+  target.readingList(books);
+
+  let lis = Array.from(document.querySelectorAll("#content li"));
+  expect(lis.length).toEqual(0);
+});
+
 test("Check DOM resembles correct output for Reading List", () => {
+  patchJsdomInnerText()
   document.body.innerHTML = `<div id="content" />`;
   let target = require("./script.js");
 
@@ -31,18 +45,19 @@ test("Check DOM resembles correct output for Reading List", () => {
 
   target.readingList(books);
 
-  let content = document.querySelector("#content");
-  expect(content.innerHTML).toBe(
-    '<ul><li class="book-list-item__not-read"><p></p><img src="https://miro.medium.com/max/1049/0*CmkOVjGAnm3D0rTo" class="book-image-cover"></li><li class="book-list-item__is-read"><p></p><img src="https://www.kurzweilai.net/images/The-Most-Human-Human-Paperback-Front-Cover.jpg" class="book-image-cover"></li><li class="book-list-item__is-read"><p></p><img src="https://jj09.net/wp-content/uploads/2013/07/the_pragmatic_programmer.jpg" class="book-image-cover"></li></ul>'
-  );
-});
+  let lis = Array.from(document.querySelectorAll("#content li"));
+  expect(lis.length).toEqual(3);
+  for (let i = 0; i < lis.length; ++i) {
+    let book = books[i];
+    let li = lis[i];
 
-test("Check DOM is empty with empty array", () => {
-  document.body.innerHTML = `<div id="content" />`;
-  let target = require("./script.js");
-  const books = [];
-  target.readingList(books);
+    let p = li.querySelector("p");
+    expect(p.textContent).toContain(book.title);
+    expect(p.textContent).toContain(book.author);
 
-  let content = document.querySelector("#content");
-  expect(content.innerHTML).toBe("");
+    let img = li.querySelector("img");
+    expect(img.src).toEqual(book.bookCoverImage);
+
+    expect(li.style.backgroundColor).toEqual(book.alreadyRead ? "green" : "red");
+  }
 });

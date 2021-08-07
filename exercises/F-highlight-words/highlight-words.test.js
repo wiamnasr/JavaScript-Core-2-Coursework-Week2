@@ -3,21 +3,11 @@ There are some tests in this file that will help you work out if your code is wo
 */
 
 const {default: userEvent} = require("@testing-library/user-event");
+const Color = require('color');
+const patchJsdomInnerText = require("../../util/jsdom-innertext.js");
 
 test("Check DOM resembles correct output for initial setup", () => {
-  // do this so students can use element.innerText which jsdom does not implement
-  Object.defineProperty(global.window.HTMLElement.prototype, "innerText", {
-    get() {
-      return this.textContent;
-    },
-    set(value) {
-      this.textContent = value;
-      if (this.tagName === "OPTION") {
-        this.value = value;
-      }
-    },
-  });
-
+  patchJsdomInnerText();
   document.body.innerHTML = `<div id="content" />`;
   let target = require("./script.js");
 
@@ -29,41 +19,40 @@ test("Check DOM resembles correct output for initial setup", () => {
 
   let options = document.querySelectorAll("select > option");
   expect(options.length).toEqual(4);
-  expect(options[0].value) === "yellow";
-  // ...
+  let didFindElementToSelect = false;
+  for (const option of options) {
+    if (option.textContent.toLowerCase() == "yellow") {
+      option.selected = "selected";
+      didFindElementToSelect = true;
+    }
+  }
 
-  let loremElement = findElementContaining(document, "span", "Lorem");
-  let ipsumElement = findElementContaining(document, "span", "ipsum");
+  expect(didFindElementToSelect).toBeTrue();
 
-  // TODO: Maybe use a library to resolve CSS colours to a canonical form
+  let loremElement = findElementContainingTextIgnoringWhitespace(document, "Lorem");
+  let ipsumElement = findElementContainingTextIgnoringWhitespace(document, "ipsum");
+
   expect(loremElement.style.backgroundColor).toEqual("");
   expect(ipsumElement.style.backgroundColor).toEqual("");
 
   userEvent.click(loremElement);
-  expect(loremElement.style.backgroundColor).toEqual("yellow");
+  const yellow = Color("yellow");
+  expect(Color(loremElement.style.backgroundColor)).toEqual(yellow);
   expect(ipsumElement.style.backgroundColor).toEqual("");
 
   userEvent.click(ipsumElement);
-  expect(loremElement.style.backgroundColor).toEqual("yellow");
-  expect(ipsumElement.style.backgroundColor).toEqual("yellow");
+  expect(Color(loremElement.style.backgroundColor)).toEqual(yellow);
+  expect(Color(ipsumElement.style.backgroundColor)).toEqual(yellow);
 
   userEvent.click(loremElement);
   expect(loremElement.style.backgroundColor).toEqual("");
-  expect(ipsumElement.style.backgroundColor).toEqual("yellow");
+  expect(Color(ipsumElement.style.backgroundColor)).toEqual(yellow);
 });
 
-// I tried using XPath along the lines of:
-// document.evaluate("//span[contains(text(), 'Lorem')]", document, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null).iterateNext()
-// but it consistently returned no elements, even though this worked in the real browser.
-// Accordingly, do some brute-force searching.
-function findElementContaining(document, tagName, text) {
+function findElementContainingTextIgnoringWhitespace(document, text) {
   const allElements = document.querySelectorAll("*");
   for (const element of allElements) {
-    // Skip non-matching tags, because textContent is recursive.
-    if (element.tagName.toLowerCase() !== tagName) {
-      continue;
-    }
-    if (element.textContent.includes(text)) {
+    if (element.textContent.toLowerCase().trim() === text.toLowerCase()) {
       return element;
     }
   }

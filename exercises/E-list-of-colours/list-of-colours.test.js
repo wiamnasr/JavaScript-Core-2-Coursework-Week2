@@ -2,7 +2,12 @@
 There are some tests in this file that will help you work out if your code is working.
 */
 
+const {default: userEvent} = require("@testing-library/user-event");
+const patchJsdomInnerText = require("../../util/jsdom-innertext.js");
+const Color = require("color");
+
 test("Check DOM resembles correct output for initial setup", () => {
+  patchJsdomInnerText();
   document.body.innerHTML = `<div id="content" />`;
   let target = require("./script.js");
 
@@ -10,18 +15,22 @@ test("Check DOM resembles correct output for initial setup", () => {
   target.listOfColours(colours);
 
   let content = document.querySelector("#content");
-  expect(content.innerHTML).toBe(
-    "<select><option>red</option><option>blue</option><option>green</option><option>yellow</option><option>pink</option><option>brown</option></select><p></p>"
-  );
-});
+  let select = content.querySelector("select");
 
-test("Check DOM contains empty <select> tag for empty content", () => {
-  document.body.innerHTML = `<div id="content" />`;
-  let target = require("./script.js");
+  let options = Array.from(select.querySelectorAll("option"));
+  let foundOptionTexts = options.map(option => option.textContent.toLowerCase());
 
-  const colours = [];
-  target.listOfColours(colours);
+  for (let colour of colours) {
+    expect(foundOptionTexts).toContain(colour);
+  }
 
-  let content = document.querySelector("#content");
-  expect(content.innerHTML).toBe("<select></select><p></p>");
+  for (let option of options) {
+    if (option.textContent.toLowerCase() === "pink") {
+      userEvent.selectOptions(select, option);
+    }
+  }
+
+  let paragraph = content.querySelector("p");
+  expect(paragraph.textContent).toEqual("You have selected: pink")
+  expect(Color(paragraph.style.color)).toEqual(Color("pink"));
 });

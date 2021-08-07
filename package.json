@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Exercises for JS2 Week 2",
   "scripts": {
-    "test": "jest --testRegex='exercises[/\\\\].*\\.js$'",
+    "test": "jest --testRegex='exercises[/\\\\].*\\.test\\.js$'",
     "test-project": "jest --testRegex='projects[/\\\\].*\\.js$'"
   },
   "repository": {
@@ -25,5 +25,8 @@
     "@testing-library/user-event": "^13.1.9",
     "jest": "^26.6.3",
     "jest-extended": "^0.11.5"
+  },
+  "dependencies": {
+    "color": "^4.0.1"
   }
 }
