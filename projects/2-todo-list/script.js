@@ -1,4 +1,19 @@
 listObjectItems = [];
+let todoButton = document.getElementById("todo-list");
+// let deleteAllButton = document.createElement("button");
+// todoButton.appendChild(deleteAllButton);
+// deleteAllButton.className = "btn btn-primary mb-3";
+// deleteAllButton.style.width = "40%";
+// deleteAllButton.style.height = "60px";
+// deleteAllButton.style.alignSelf = "center";
+
+// deleteAllButton.style.backgroundColor = "purple";
+// deleteAllButton.style.color = "white";
+// deleteAllButton.style.fontWeight = "bolder";
+// deleteAllButton.textContent = "Delete All Completed";
+// deleteAllButton.style.borderRadius = "50%";
+// deleteAllButton.id = "deleteAll";
+// console.log(deleteAllButton.id);
 
 function populateTodoList(todos) {
   let unorderedlist = document.getElementById("todo-list");
@@ -52,7 +67,7 @@ function populateTodoList(todos) {
 
       function deleteLi() {
         unorderedlist.removeChild(li);
-        listObjectItems.splice(listObjectItems.indexOf(li.textContent),1);
+        listObjectItems.splice(listObjectItems.indexOf(li.textContent), 1);
         console.log(listObjectItems);
       }
 
@@ -103,6 +118,22 @@ function addNewTodo(event) {
 // addNewTodo(event);
 
 // Advanced challenge: Write a fucntion that checks the todos in the todo list and deletes the completed ones (we can check which ones are completed by seeing if they have the line-through styling applied or not).
-function deleteAllCompletedTodos() {
-  // Write your code here...
-}
+// function deleteAllCompletedTodos() {
+//   // Write your code here...
+//   let items = document.getElementsByClassName("list-group-item");
+//   let unorderedlist = document.getElementById("todo-list");
+//   console.log("here /");
+//   items.forEach((item) => {
+//     if (item.style.textDecoration == "line-through") {
+//       unorderedlist.removeChild(item);
+//     }
+//   });
+// }
+
+// let deleteAllCompleted = document.getElementById("deleteAll");
+
+// deleteAllCompleted.addEventListener("click", consolelog);
+
+// function consolelog() {
+//   console.log("I've been clicked!");
+// }
