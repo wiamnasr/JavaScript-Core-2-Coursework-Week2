@@ -1,10 +1,22 @@
 function readingList(books) {
   // Write your code here...
   let content = document.querySelector("#content");
+  content.style.display = "flex";
+  content.style.flexFlow = "row wrap";
+
   let unorderedList = document.createElement("ul");
   content.appendChild(unorderedList);
+  content.style.width = "100%";
+  content.style.height = "100%";
+
+  // content.style.justifyContent = "space-around";
+
+  unorderedList.style.width = "100%";
+  unorderedList.style.height = "100%";
   unorderedList.style.display = "flex";
-  unorderedList.innerHTML = "Books you will never read";
+  unorderedList.style.flexFlow = "row wrap";
+  // unorderedList.innerHTML = "This is a Book list";
+  unorderedList.style.justifyContent = "space-around";
   unorderedList.style.color = "white";
   unorderedList.style.fontSize = "20pt";
   unorderedList.style.fontWeight = "bolder";
@@ -14,14 +26,16 @@ function readingList(books) {
   books.forEach((book) => {
     let listItem = document.createElement("li");
     listItem.style.width = "20%";
-
-    listItem.style.margin = "100px 0 0 100px";
-    listItem.style.height = "300pt";
+    listItem.style.display = "flex";
+    listItem.style.flexFlow = "row wrap";
+    // listItem.style.margin = "100px 0 0 20px";
+    listItem.style.height = "200px";
     listItem.style.listStyle = "none";
 
     let para = document.createElement("p");
     let image = document.createElement("img");
-    image.style.width = "50%";
+    image.style.maxWidth = "70%";
+    image.style.height = "130px";
     listItem.appendChild(para);
     listItem.appendChild(image);
     unorderedList.appendChild(listItem);
@@ -41,6 +55,9 @@ function readingList(books) {
     image.src = imgArr[books.indexOf(book)];
     console.log(image.src);
     para.textContent = book.title + " " + book.author;
+    para.style.fontSize = "10px";
+    para.style.textAlign = "center";
+    para.style.width = "100%";
   });
 }
 

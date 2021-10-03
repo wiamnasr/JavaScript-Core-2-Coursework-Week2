@@ -55,30 +55,36 @@ let emailInput = document.getElementById("exampleInputEmail1");
 let nameInput = document.getElementById("example-text-input");
 let describeInput = document.getElementById("exampleTextarea");
 
-let submit = document.getElementsByClassName("btn btn-primary");
-let arrSubmitBtn = Array.from(submit);
-arrSubmitBtn.forEach((element) => element.addEventListener("click", submitBtn));
+let submit = document.getElementById("submitForm");
+
+submit.addEventListener("click", submitBtn);
 //  getSubmitBtn.addEventListener("click", function (event) {
 //       event.preventDefault()
 //   }
 function submitBtn() {
+  event.preventDefault();
   if (emailInput.value.length === 0 || !emailInput.value.includes("@")) {
     emailInput.style.backgroundColor = "red";
   }
-
   if (nameInput.value.length === 0) {
     nameInput.style.backgroundColor = "red";
   }
-
   if (describeInput.value.length === 0) {
     describeInput.style.backgroundColor = "red";
   }
 
-  
-  alert("Thank you for filling out the form");
-  nameInput.value = "";
-  emailInput.value = "";
-  describeInput.value = "";
-
-  event.preventDefault();
+  if (
+    emailInput.value.length > 0 &&
+    emailInput.value.includes("@") &&
+    nameInput.value.length > 0 &&
+    describeInput.value.length > 0
+  ) {
+    alert("Thank you for filling out the form");
+    nameInput.value = "";
+    emailInput.value = "";
+    describeInput.value = "";
+    emailInput.style.backgroundColor = "white";
+    nameInput.style.backgroundColor = "white";
+    describeInput.style.backgroundColor = "white";
+  }
 }

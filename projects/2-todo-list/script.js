@@ -38,7 +38,7 @@ function populateTodoList(todos) {
 
       li.className =
         "list-group-item d-flex justify-content-between align-items-center";
-      li.style.textDecoration = "line-through";
+      li.style.textDecoration = "none";
       unorderedlist.appendChild(li);
 
       function checkUncheck() {
@@ -52,6 +52,8 @@ function populateTodoList(todos) {
 
       function deleteLi() {
         unorderedlist.removeChild(li);
+        listObjectItems.splice(listObjectItems.indexOf(li.textContent),1);
+        console.log(listObjectItems);
       }
 
       //end of paste

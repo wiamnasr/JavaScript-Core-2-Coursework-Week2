@@ -11,8 +11,6 @@ function listOfColours(colours) {
     selectE.appendChild(option);
   });
 
-  
-
   selectE.addEventListener("click", changeP);
 
   function changeP(eachClick) {

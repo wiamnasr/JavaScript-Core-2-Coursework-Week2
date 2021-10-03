@@ -6,9 +6,9 @@ function todoList(todos) {
 
   todos.forEach((todo) => {
     let listItem = document.createElement("li");
-    listItem.innerHTML = todos.todo;
+    listItem.innerHTML = todo.todo;
     listItem.addEventListener("click", modifyText);
-    
+
     unorderedList.appendChild(listItem);
   });
 }
@@ -18,7 +18,11 @@ function removeStyle() {
 }
 
 function modifyText() {
-  this.style.textDecoration = "line-through";
+  if (this.style.textDecoration != "line-through") {
+    this.style.textDecoration = "line-through";
+  } else {
+    this.style.textDecoration = "none";
+  }
 }
 
 const todos = [
